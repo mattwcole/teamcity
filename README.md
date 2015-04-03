@@ -1,7 +1,5 @@
 teamcity Cookbook
 =================
-[![Build Status](http://img.shields.io/travis/sethvargo/chefspec.svg)][travis]
-
-[travis]: https://travis-ci.org/matthew-cole/teamcity
+[![Build Status](https://travis-ci.org/mattwcole/teamcity.svg?branch=master)](https://travis-ci.org/mattwcole/teamcity)
 
 TODO: Enter the cookbook description here.
