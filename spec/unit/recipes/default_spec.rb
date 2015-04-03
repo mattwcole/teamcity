@@ -8,7 +8,8 @@ describe 'teamcity::default' do
 
   %w(java teamcity::server).each do |recipe|
     it "requires #{recipe} recipe" do
-      expect(chef_run).to include_recipe(recipe)      
+      expect(chef_run).to include_recipe(recipe)
+      expect(chef_run).not_to include_recipe('teamcity::server_windows')   
     end
   end
 

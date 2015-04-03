@@ -25,14 +25,16 @@ describe 'teamcity::server' do
       .with(source: 'teamcity.init.erb')
       .with(variables: {
         :script_path => File.join(chef_run.node['ark']['prefix_home'], 'TeamCity-1.0.0/bin/runAll.sh'),
-        :user => chef_run.node['teamcity']['user']
+        :user => chef_run.node['teamcity']['user'],
+        :data_path => chef_run.node['teamcity']['data_path']
       })
       .with(mode: '755')
   end
 
-  it 'runs service' do
+  it 'enables and restarts service' do
     expect(chef_run.service('teamcity')).to do_nothing
     expect(chef_run.template('/etc/init.d/teamcity')).to notify('service[teamcity]')
-      .to(:start)    
+      .to(:enable)
+      .to(:restart)  
   end
 end
