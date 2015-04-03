@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'teamcity::default' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new.converge(described_recipe)

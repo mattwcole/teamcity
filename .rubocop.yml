@@ -1,3 +1,8 @@
+AllCops:
+  Exclude:
+    - '.git/**/*'
+    - '.kitchen/**/*'
+    - 'vendor/**/*'
 LineLength:
   Max: 200
 Style/SingleSpaceBeforeFirstArg:
@@ -5,6 +10,6 @@ Style/SingleSpaceBeforeFirstArg:
 HashSyntax:
   EnforcedStyle: hash_rockets
   Exclude:
-    - Rakefile
     - 'spec/**/*'
     - 'test/**/*'
+    - Rakefile

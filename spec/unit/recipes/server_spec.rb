@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'teamcity::server' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
