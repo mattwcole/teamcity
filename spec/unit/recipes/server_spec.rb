@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'teamcity::server' do
-
   let(:chef_run) do
     ChefSpec::SoloRunner.new do |node|
       node.set['teamcity']['url'] = 'http://jetbrains.com/TeamCity-1.0.0.tar.gz'
@@ -23,7 +22,8 @@ describe 'teamcity::server' do
   it 'creates init script' do
     expect(chef_run).to create_template('/etc/init.d/teamcity')
       .with(source: 'teamcity.init.erb')
-      .with(variables: {
+      .with(variables:
+      {
         :script_path => File.join(chef_run.node['ark']['prefix_home'], 'TeamCity-1.0.0/bin/runAll.sh'),
         :user => chef_run.node['teamcity']['user'],
         :data_path => chef_run.node['teamcity']['data_path']
@@ -35,6 +35,6 @@ describe 'teamcity::server' do
     expect(chef_run.service('teamcity')).to do_nothing
     expect(chef_run.template('/etc/init.d/teamcity')).to notify('service[teamcity]')
       .to(:enable)
-      .to(:restart)  
+      .to(:restart)
   end
 end

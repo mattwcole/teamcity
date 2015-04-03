@@ -19,16 +19,15 @@ end
 
 template '/etc/init.d/teamcity' do
   source 'teamcity.init.erb'
-  variables ({
+  variables(
     :script_path => File.join(node['ark']['prefix_home'], "#{archive_info[1]}-#{archive_info[2]}", 'bin/runAll.sh'),
     :user => node['teamcity']['user'],
-    :data_path => node['teamcity']['data_path']
-  })
+    :data_path => node['teamcity']['data_path'])
   mode '755'
   notifies :enable, 'service[teamcity]'
   notifies :restart, 'service[teamcity]'
 end
 
-service 'teamcity' do    
+service 'teamcity' do
   action :nothing
 end
