@@ -14,7 +14,9 @@ describe 'teamcity::default' do
 
   context 'windows family' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012r2').converge(described_recipe)
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012r2') do |node|        
+        node.set['java']['oracle']['accept_oracle_download_terms'] = true
+      end.converge(described_recipe)
     end
 
     it 'requires server_windows recipe' do

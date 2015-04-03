@@ -1,0 +1,13 @@
+#!/bin/sh
+        
+case $1 in
+	start)
+		start-stop-daemon --start -c <%= @user %> --exec <%= @script_path %> start
+	;;
+	       
+	stop)
+		start-stop-daemon --start -c <%= @user %> --exec <%= @script_path %> stop
+	;;
+esac
+       
+exit 0
