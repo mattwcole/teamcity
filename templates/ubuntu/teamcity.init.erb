@@ -1,14 +1,16 @@
 #!/bin/sh
 
 <%= "export TEAMCITY_DATA_PATH='#{@data_path}'" if @data_path %>
+<%= "export TEAMCITY_SERVER_OPTS='#{@server_opts}'" if @server_opts %>
+<%= "export TEAMCITY_SERVER_MEM_OPTS='#{@server_mem_opts}'" if @server_mem_opts %>
 
 case $1 in
 	start)
-		start-stop-daemon --start -c <%= @user %> --exec <%= @script_path %> start
+		start-stop-daemon --start -c <%= @user %> --exec <%= @run_script %> start
 	;;
 	       
 	stop)
-		start-stop-daemon --start -c <%= @user %> --exec <%= @script_path %> stop
+		start-stop-daemon --start -c <%= @user %> --exec <%= @run_script %> stop
 	;;
 esac
        
