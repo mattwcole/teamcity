@@ -1,16 +1,22 @@
 #!/bin/sh
 
-<%= "export TEAMCITY_DATA_PATH='#{@data_path}'" if @data_path %>
-<%= "export TEAMCITY_SERVER_OPTS='#{@server_opts}'" if @server_opts %>
-<%= "export TEAMCITY_SERVER_MEM_OPTS='#{@server_mem_opts}'" if @server_mem_opts %>
+<% if node['teamcity']['data_path'] %>
+  export TEAMCITY_DATA_PATH=<%= node['teamcity']['data_path'] %>
+<% end %>
+<% if node['teamcity']['server_opts'] %>
+  export TEAMCITY_SERVER_OPTS=<%= node['teamcity']['server_opts'] %>
+<% end %>
+<% if node['teamcity']['server_mem_opts'] %>
+  export TEAMCITY_SERVER_MEM_OPTS=<%= node['teamcity']['server_mem_opts'] %>
+<% end %>
 
 case $1 in
 	start)
-		start-stop-daemon --start -c <%= @user %> --exec <%= @run_script %> start
+		start-stop-daemon --start -c <%= node['teamcity']['user'] %> --exec <%= @run_script %> start
 	;;
 	       
 	stop)
-		start-stop-daemon --start -c <%= @user %> --exec <%= @run_script %> stop
+		start-stop-daemon --start -c <%= node['teamcity']['user'] %> --exec <%= @run_script %> stop
 	;;
 esac
        
