@@ -1,14 +1,10 @@
-archive_info = node['teamcity']['url'].match(/(\w+)-((?:\d\.*)+)\.tar\.gz$/)
-archive_filename = archive_info[0]
-archive_name = archive_info[1]
-archive_version = archive_info[2]
-data_path = node['teamcity']['data_path'] || File.join(node['teamcity']['home'], '.BuildServer')
+data_path = node['teamcity']['data_path'] || File.join(node['teamcity']['user_home'], '.BuildServer')
 
-group node['teamcity']['group']
+group node['teamcity']['user_group']
 
 user node['teamcity']['user'] do
-  gid node['teamcity']['group']
-  home node['teamcity']['home']
+  gid node['teamcity']['user_group']
+  home node['teamcity']['user_home']
   manage_home true
 end
 
@@ -26,19 +22,17 @@ directory node['teamcity']['log_path'].to_s do
   only_if { node['teamcity']['log_path'] }
 end
 
-ark archive_filename do
+ark File.basename(node['teamcity']['install_path']) do
   url node['teamcity']['url']
   checksum node['teamcity']['checksum']
-  name archive_name
-  version archive_version
+  path File.dirname(node['teamcity']['install_path'])
   owner node['teamcity']['user']
-  prefix_root node['teamcity']['install_path']
-  prefix_home node['teamcity']['install_path']
+  action :put
 end
 
 template '/etc/init.d/teamcity' do
   source 'teamcity.init.erb'
-  variables :run_script => File.join(node['teamcity']['install_path'], "#{archive_name}-#{archive_version}", 'bin/runAll.sh')
+  variables :run_script => File.join(node['teamcity']['install_path'], 'bin/runAll.sh')
   mode '755'
   notifies :enable, 'service[teamcity]'
   notifies :restart, 'service[teamcity]'

@@ -4,10 +4,10 @@ describe 'teamcity::server' do
   end
 
   it 'creates user' do
-    expect(chef_run).to create_group(chef_run.node['teamcity']['group'])
+    expect(chef_run).to create_group(chef_run.node['teamcity']['user_group'])
     expect(chef_run).to create_user(chef_run.node['teamcity']['user'])
-      .with(gid: chef_run.node['teamcity']['group'])
-      .with(home: chef_run.node['teamcity']['home'])
+      .with(gid: chef_run.node['teamcity']['user_group'])
+      .with(home: chef_run.node['teamcity']['user_home'])
       .with(manage_home: true)
   end
 
@@ -15,7 +15,7 @@ describe 'teamcity::server' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new do |node|
         node.set['teamcity']['data_path'] = nil
-        node.set['teamcity']['home'] = 'teamcity_home'
+        node.set['teamcity']['user_home'] = 'teamcity_home'
       end.converge(described_recipe)
     end
 
@@ -25,12 +25,12 @@ describe 'teamcity::server' do
         .with(recursive: true)
     end
 
-    it 'creates config directory' do
+    it 'creates config directory in teamcity user home' do
       expect(chef_run).to create_directory('teamcity_home/.BuildServer/config')
         .with(owner: chef_run.node['teamcity']['user'])
     end
 
-    it 'creates internal properties file' do
+    it 'creates internal properties file in teamcity user home' do
       expect(chef_run).to create_template('teamcity_home/.BuildServer/config/internal.properties')
         .with(source: 'internal.properties.erb')
         .with(owner: chef_run.node['teamcity']['user'])
@@ -81,29 +81,23 @@ describe 'teamcity::server' do
       end.converge(described_recipe)
     end
 
-    it 'does creates log directory' do
+    it 'creates log directory' do
       expect(chef_run).to create_directory('log_path')
     end
   end
 
   it 'downloads and extracts archive' do
-    chef_run.node.set['teamcity']['url'] = 'http://jetbrains.com/TeamCity-1.0.0.tar.gz'
-    chef_run.converge(described_recipe)
-
-    expect(chef_run).to install_archive('TeamCity-1.0.0.tar.gz')
+    expect(chef_run).to put_archive('teamcity')
+      .with(url: chef_run.node['teamcity']['url'])
       .with(checksum: chef_run.node['teamcity']['checksum'])
       .with(owner: chef_run.node['teamcity']['user'])
-      .with(prefix_root: chef_run.node['teamcity']['install_path'])
-      .with(prefix_home: chef_run.node['teamcity']['install_path'])
+      .with(path: File.dirname(chef_run.node['teamcity']['install_path']))
   end
 
   it 'creates init script' do
-    chef_run.node.set['teamcity']['url'] = 'http://jetbrains.com/TeamCity-1.0.0.tar.gz'
-    chef_run.converge(described_recipe)
-
     expect(chef_run).to create_template('/etc/init.d/teamcity')
       .with(source: 'teamcity.init.erb')
-      .with(variables: { :run_script => '/usr/local/TeamCity-1.0.0/bin/runAll.sh' })
+      .with(variables: { :run_script => '/usr/local/teamcity/bin/runAll.sh' })
       .with(mode: '755')
   end
 
