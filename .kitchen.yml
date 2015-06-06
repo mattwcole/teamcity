@@ -1,6 +1,8 @@
 ---
 driver:
   name: vagrant
+  customize:
+    memory: 1024
   network:
     - ['forwarded_port', {guest: 8111, host: 8111}]
 
@@ -8,7 +10,10 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: ubuntu-12.04
+  - name: ubuntu-14.04
+    driver:
+      box: ubuntu/trusty64
+      box_url: https://atlas.hashicorp.com/ubuntu/boxes/trusty64
     run_list:
       - recipe[apt::default]
 
