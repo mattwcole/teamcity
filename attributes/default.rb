@@ -1,5 +1,5 @@
-default['teamcity']['url'] = 'http://download.jetbrains.com/teamcity/TeamCity-9.0.3.tar.gz'
-default['teamcity']['checksum'] = 'cacef22cf53506346078c05ff9c12dd5bd773c90596cf72fbf4ff49ff8493d1a'
+default['teamcity']['url'] = 'http://download.jetbrains.com/teamcity/TeamCity-9.0.4.tar.gz'
+default['teamcity']['checksum'] = '479c5834ecee8fd9ba1fb8afc2e47b163c8ff8275d5b591769a2f9e038be0527'
 default['teamcity']['user'] = 'teamcity'
 default['teamcity']['user_group'] = 'teamcity'
 default['teamcity']['user_home'] = '/home/teamcity'
