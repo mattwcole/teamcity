@@ -1,15 +1,15 @@
 #!/bin/sh
 
 <% if node['teamcity']['data_path'] %>
-export TEAMCITY_DATA_PATH=<%= node['teamcity']['data_path'] %>
+export TEAMCITY_DATA_PATH="<%= node['teamcity']['data_path'] %>"
 <% end %>
 <% if node['teamcity']['server_opts'] %>
-export TEAMCITY_SERVER_OPTS=<%= node['teamcity']['server_opts'] %>
+export TEAMCITY_SERVER_OPTS="<%= node['teamcity']['server_opts'] %>"
 <% end %>
 <% if node['teamcity']['server_mem_opts'] %>
-export TEAMCITY_SERVER_MEM_OPTS=<%= node['teamcity']['server_mem_opts'] %>
+export TEAMCITY_SERVER_MEM_OPTS="<%= node['teamcity']['server_mem_opts'] %>"
 <% end %>
-export CATALINA_PID=<%= File.join(node['teamcity']['install_path'], 'teamcity.pid') %>
+export CATALINA_PID="<%= File.join(node['teamcity']['install_path'], 'teamcity.pid') %>"
 
 . /lib/lsb/init-functions
 
